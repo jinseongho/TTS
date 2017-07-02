@@ -7,15 +7,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 
 import java.util.HashMap;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener, View.OnClickListener, TextWatcher {
 
     private TextToSpeech mTTS;
     private AppCompatEditText mEditTTS;
+    private AppCompatButton mBtnSpeak;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +27,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         setContentView(R.layout.activity_main);
 
         mEditTTS = (AppCompatEditText) findViewById(R.id.edit_tts);
-        findViewById(R.id.btn_speak).setOnClickListener(this);
-
+        mBtnSpeak = (AppCompatButton) findViewById(R.id.btn_speak);
+        mEditTTS.addTextChangedListener(this);
+        mBtnSpeak.setOnClickListener(this);
         mTTS = new TextToSpeech(this, this);
     }
 
@@ -37,10 +42,23 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_speak) {
-            if (mEditTTS.getText().length() > 0) {
+            if (mEditTTS.getText().toString().trim().length() > 0) {
                 ttsSpeak(mEditTTS.getText().toString());
             }
         }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        mBtnSpeak.setEnabled(s.toString().trim().length() > 0);
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
     }
 
     @Override
