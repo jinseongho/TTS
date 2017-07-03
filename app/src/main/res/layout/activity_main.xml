@@ -4,19 +4,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="20dp"
+    android:orientation="vertical"
     tools:context="me.ingeni.tts.MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <android.support.v7.widget.AppCompatEditText
-        android:id="@+id/edit_tts"
-        android:layout_width="200dp"
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/edit_tts"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:hint="hint" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_speak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="speak" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:hint="hint" />
+        android:gravity="center_vertical">
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_speak"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="speak" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="pitch" />
+
+        <SeekBar
+            android:id="@+id/seekbar_pitch"
+            android:layout_width="250dp"
+            android:layout_height="20dp"
+            android:max="100"
+            android:progress="50" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="rate" />
+
+        <SeekBar
+            android:id="@+id/seekbar_rate"
+            android:layout_width="250dp"
+            android:layout_height="20dp"
+            android:max="100"
+            android:progress="50" />
+
+    </LinearLayout>
 
 </LinearLayout>

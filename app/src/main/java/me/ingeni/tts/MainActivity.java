@@ -2,24 +2,27 @@ package me.ingeni.tts;
 
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.SeekBar;
 
 import java.util.HashMap;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener, View.OnClickListener, TextWatcher {
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener, View.OnClickListener, TextWatcher, SeekBar.OnSeekBarChangeListener {
 
     private TextToSpeech mTTS;
     private AppCompatEditText mEditTTS;
     private AppCompatButton mBtnSpeak;
+    private SeekBar mSeekBarPich;
+    private SeekBar mSeekBarRate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +31,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         mEditTTS = (AppCompatEditText) findViewById(R.id.edit_tts);
         mBtnSpeak = (AppCompatButton) findViewById(R.id.btn_speak);
+        mSeekBarPich = (SeekBar) findViewById(R.id.seekbar_pitch);
+        mSeekBarRate = (SeekBar) findViewById(R.id.seekbar_rate);
         mEditTTS.addTextChangedListener(this);
         mBtnSpeak.setOnClickListener(this);
+        mSeekBarPich.setOnSeekBarChangeListener(this);
+        mSeekBarRate.setOnSeekBarChangeListener(this);
         mTTS = new TextToSpeech(this, this);
     }
 
@@ -62,6 +69,32 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (progress > 0) {
+            switch (seekBar.getId()) {
+                case R.id.seekbar_pitch: {
+                    mTTS.setPitch(50 / progress);
+                    break;
+                }
+                case R.id.seekbar_rate: {
+                    mTTS.setSpeechRate(50 / progress);
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
     public void onInit(int status) {
         if (status != TextToSpeech.ERROR) {
             mTTS.setLanguage(Locale.KOREAN);
@@ -75,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             ttsOldSpeak(text);
         }
     }
-
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void ttsNewSpeak(String text) {
